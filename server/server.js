@@ -4,6 +4,7 @@ const app = express();
 const cors = require('cors');
 const connectDB = require('./config/db');
 const userRoute = require('./routes/userRoute');
+const { notfoundHandler, errorHandler } = require('./middlewares/errorMiddleware');
 
 
 
@@ -21,3 +22,6 @@ connectDB()
 app.listen(process.env.PORT, console.log("server up port: " + process.env.PORT));
 
 app.use("/api/user", userRoute)
+
+app.use(notfoundHandler)
+app.use(errorHandler)
