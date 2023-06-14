@@ -1,20 +1,67 @@
-import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack } from '@chakra-ui/react'
+import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack, useToast } from '@chakra-ui/react'
 import React, { useState } from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
 
   const [show, setShow] = useState(false);
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const toast = useToast()
+  const navigate = useNavigate()
   
 
   const handleClick = () => {
         setShow(prev => !prev)
   }
 
-    const submitHandler = () => {
+  const submitHandler = async () => {
+    if(!email || !password){
+      toast({
+          title: 'Warning',
+          description: "You have to complete all the required fields",
+          status: 'warning',
+          duration: 9000,
+          isClosable: true,
+        })
+        setLoading(false)
+        return
+    }
 
+    try {
+      setLoading(true)
+        const config ={
+          headers: {
+          'Content-Type': 'application/json'
+          }
+        }
+
+        const { data } = await axios.post('http://localhost:4000/api/user/login', {email, password}, config)
+        toast({
+          title: 'welcome',
+          description: "welcome back to your account",
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        })
+        localStorage.setItem('userinfo', JSON.stringify(data))
+        setLoading(false)
+        navigate("/chat")
+
+    } catch (error) {
+      // toast({
+      //     title: 'error ',
+      //     description: `${error.message}`,
+      //     status: 'error',
+      //     duration: 9000,
+      //     isClosable: true,
+      //   })
+        setLoading(false)
+        return
+    }
+    
   }
 
   return (
