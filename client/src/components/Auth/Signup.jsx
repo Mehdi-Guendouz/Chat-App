@@ -71,7 +71,7 @@ const Signup = () => {
 
         localStorage.setItem("userInfo", JSON.stringify(data))
         setPicLoading(false)
-        navigate("/chat")
+        navigate("/chats")
       }catch(error){
         console.log(error)
         toast({

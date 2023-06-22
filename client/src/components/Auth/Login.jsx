@@ -48,7 +48,7 @@ function Login() {
         })
         localStorage.setItem('userinfo', JSON.stringify(data))
         setLoading(false)
-        navigate("/chat")
+        navigate("/chats")
 
     } catch (error) {
       // toast({
