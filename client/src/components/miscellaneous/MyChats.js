@@ -5,6 +5,7 @@ import axios from 'axios';
 import { AddIcon } from '@chakra-ui/icons';
 import ChatLoading from './ChatLoading';
 import { getSender } from '../../config/ChatLogic';
+import GroupChatModel from './GroupChatModel';
 
 const MyChats = () => {
     const [loggedUser, setLoggedUser] = useState();
@@ -24,7 +25,7 @@ const MyChats = () => {
             const { data } = await axios.get(`http://localhost:4000/api/chat`, config)
             setChatloading(false)
             setChats(data)
-            console.log(data)
+            // console.log(data)
         } catch (error) {
             toast({
                 title: 'there is no chat available',
@@ -59,21 +60,23 @@ const MyChats = () => {
         px={3}
         fontSize={{ base: "28px", md: "30px" }}
         fontFamily="Work sans"
-        d="flex"
+        display="flex"
         w="100%"
         justifyContent="space-between"
         alignItems="center"
       >
         My Chats
-        {/* <GroupChatModal>
-          <Button
-            d="flex"
+      
+          
+        <GroupChatModel>
+            <Button
+            display="flex"
             fontSize={{ base: "17px", md: "10px", lg: "17px" }}
             rightIcon={<AddIcon />}
           >
             New Group Chat
           </Button>
-        </GroupChatModal> */}
+        </GroupChatModel>
       </Box>
       <Box
         d="flex"
