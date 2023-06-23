@@ -7,7 +7,7 @@ import ChatLoading from './ChatLoading';
 import { getSender } from '../../config/ChatLogic';
 import GroupChatModel from './GroupChatModel';
 
-const MyChats = () => {
+const MyChats = ({fetchAgain}) => {
     const [loggedUser, setLoggedUser] = useState();
     const [chatloading, setChatloading] = useState(false);
     const {user , setSelectedChat, selectedChat, chats, setChats } = ChatState()
@@ -41,12 +41,12 @@ const MyChats = () => {
     useEffect(() => {
         setLoggedUser(JSON.parse(localStorage.getItem('userinfo')));
         fetchChats() 
-    }, []);
+    }, [fetchAgain]);
 
 
     return (
         <Box
-        d={{ base: selectedChat ? "none" : "flex", md: "flex" }}
+        display={{ base: selectedChat ? "none" : "flex", md: "flex" }}
         flexDir="column"
         alignItems="center"
         p={3}
