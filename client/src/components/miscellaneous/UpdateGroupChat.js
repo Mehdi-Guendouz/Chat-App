@@ -137,7 +137,7 @@ function UpdateGroupChat({setFetchAgain}) {
                 }
             }
 
-            const { data } = await axios.put('http://localhost:4000/api/chat/groupRemove', {groupId:selectedChat._id , removeMember: user._id},config)
+            await axios.put('http://localhost:4000/api/chat/groupRemove', {groupId:selectedChat._id , removeMember: user._id},config)
             setSelectedChat()
             setFetchAgain(prev => !prev)
 
