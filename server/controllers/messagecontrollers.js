@@ -7,7 +7,6 @@ const Message = require('../models/messageModel');
 
 const allMessage = asyncHandler(async (req , res) => {
     const chatId = req.params.chatId
-    console.log(chatId)
     if(!chatId){
         console.log("provide the chatId")
         return res.status(404).send({ message: 'chat not found' })

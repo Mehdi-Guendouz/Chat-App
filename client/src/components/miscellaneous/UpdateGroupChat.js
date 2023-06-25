@@ -6,7 +6,7 @@ import UserBadgeItem from '../userAvatar/UserBadgeItem';
 import axios from 'axios';
 import UserListItem from '../userAvatar/UserListItem';
 
-function UpdateGroupChat({setFetchAgain}) {
+function UpdateGroupChat({setFetchAgain, fetchAllMessages   }) {
     const [updateGroupName, setUpdateGroupName] = useState('');
     const [loading, setLoading] = useState(false);
     const [groupRenameLoading, setGroupRenameLoading] = useState(false);
@@ -52,6 +52,7 @@ function UpdateGroupChat({setFetchAgain}) {
 
             const { data } = await axios.put('http://localhost:4000/api/chat/groupRemove', {groupId:selectedChat._id , removeMember: deletedUser._id},config)
             setSelectedChat(data)
+            fetchAllMessages()
             setFetchAgain(prev => !prev)
 
         } catch (error) {
@@ -139,6 +140,7 @@ function UpdateGroupChat({setFetchAgain}) {
 
             await axios.put('http://localhost:4000/api/chat/groupRemove', {groupId:selectedChat._id , removeMember: user._id},config)
             setSelectedChat()
+            fetchAllMessages()
             setFetchAgain(prev => !prev)
 
         } catch (error) {
