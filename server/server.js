@@ -72,4 +72,9 @@ io.on("connection", (socket) => {
         })
 
     })
+
+    socket.off("setup", () => {
+        console.log("user disconnected");
+        socket.leave();
+    })
 })

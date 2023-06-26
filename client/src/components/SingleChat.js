@@ -9,10 +9,22 @@ import axios from 'axios'
 import './styles.css'
 import ScrollableGroupChat from './ScrollableGroupChat'
 import io from "socket.io-client"
+import Lottie from 'react-lottie';
+import * as animationData from "../animation/77160-typing.json"
 
 
 const ENDPOINT = 'http://localhost:4000'
 let socket , selectedChatCompare
+
+
+    const defaultOptions = {
+      loop: true,
+      autoplay: true, 
+      animationData: animationData,
+      rendererSettings: {
+        preserveAspectRatio: 'xMidYMid slice'
+      }
+    };
 
 
 function SingleChat({fetchAgain , setFetchAgain}) {
@@ -192,9 +204,16 @@ function SingleChat({fetchAgain , setFetchAgain}) {
                   </Box>
                 </>
               )}
+              {isTyping ? <div>
+                <Lottie 
+                  options={defaultOptions}
+                  width={70}
+                  style={{ marginBottom: 15, marginLeft: 0 }}
+                />
+              </div> : <></>}
             </Box>
             <FormControl onKeyDown={handelSendMessage} isRequired mt={3}>
-              {isTyping ? <div>Loading...</div> : <></>}
+              
               <Input 
                 onChange={typingHandler}
                 placeholder='your message'
