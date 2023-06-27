@@ -1,6 +1,7 @@
 import { Avatar, Box, Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Text, Toast, Tooltip, useDisclosure, useToast } from '@chakra-ui/react';
 import { BellIcon, ChevronDownIcon } from '@chakra-ui/icons'
-
+import NotificationBadge from 'react-notification-badge';
+import {Effect} from 'react-notification-badge';
 import React, { useState } from 'react';
 import { ChatState } from '../../context/ChatProvider';
 import ProfileModel from './ProfileModel';
@@ -8,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ChatLoading from './ChatLoading';
 import UserListItem from '../userAvatar/UserListItem';
+import { getSender } from '../../config/ChatLogic';
 
 const SideDrawer = () => {
 
@@ -16,7 +18,7 @@ const SideDrawer = () => {
     const [searchResult, setSearchResult] = useState([]);
     const [chatloading, setChatLoading] = useState(false);
     const [loading, setLoading] = useState(false);
-    const {user , setSelectedChat, selectedChat, chats, setChats } = ChatState()
+    const {user , setSelectedChat, selectedChat, chats, setChats ,  notifications, setNotifications } = ChatState()
     const { isOpen, onOpen, onClose } = useDisclosure()
     const toast = useToast()
 
@@ -112,14 +114,26 @@ const SideDrawer = () => {
                 </Text>
                 <div>
                     <Menu>
-                    <MenuButton>
+                    <MenuButton p={1}>
+                        <NotificationBadge count={notifications.length} effect={Effect.SCALE}/>
                         <BellIcon fontSize={'2xl'} m={1} />
                     </MenuButton>
-                        {/* <MenuList></MenuList> */}
+                        <MenuList pl={5}>
+                            {!notifications.length ? <span>NO messages</span> : (
+                                notifications.map(not =>(
+                                    <MenuItem key={not._id} onClick={() => {
+                                        setSelectedChat(not.chat);
+                                        setNotifications(notifications.filter( n => n !== not))
+                                    }}>
+                                        {not.chat.isGroupChat ? `New Message from ${not.chat.chatName}` : `New Message from ${getSender(user, not.chat.users)}` }
+                                    </MenuItem>
+                                ))
+                            )}
+                        </MenuList>
                     </Menu>
                     <Menu>
                         <MenuButton as={Button} rightIcon={<ChevronDownIcon/>}>
-                            <Avatar cursor={'pointer'} size={'sm'} name={user.name} src={user.pic}/>
+                            <Avatar cursor={'pointer'} size={'sm'} name={user.name}/>
                         </MenuButton>
                         <MenuList>
                             <ProfileModel user={user}>
